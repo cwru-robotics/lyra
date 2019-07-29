@@ -1,0 +1,1 @@
+Until [this pull request](https://github.com/ros-simulation/gazebo_ros_pkgs/pull/948) is merged, you will need to clone and build [the forked package](https://github.com/shiveshkhaitan/gazebo_ros_pkgs/tree/spawn_model) for the system to properly work. It has no dependencies not also in the lyra_gz package.

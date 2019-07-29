@@ -1,0 +1,14 @@
+<launch>
+	<arg name="namespace" default="" />
+
+	<node
+		name="lyra_$(arg namespace)" 
+		pkg="lyra"
+		type="lyra_bridge"
+		respawn="false"
+		output="screen"
+		ns="$(arg namespace)"
+		args=""
+	/>
+
+</launch>

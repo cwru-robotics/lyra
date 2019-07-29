@@ -1,0 +1,11 @@
+float32 palm_front
+float32 palm_back
+float32 palm_inside
+float32 palm_outside
+float32 thumb
+float32 thumb_side
+float32 index
+float32 index_side
+float32 middle
+float32 ring
+float32 little
