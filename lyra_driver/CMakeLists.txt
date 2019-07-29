@@ -17,12 +17,13 @@ find_package(lyra_msg REQUIRED)
 find_package(rclcpp REQUIRED)
 #TODO what about this?
 find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 #find_package(rosidl_default_generators REQUIRED)
 
 
 add_executable(lyra_bridge src/lyra.cpp)
-ament_target_dependencies(lyra_bridge "rclcpp" "lyra_msg" "std_msgs" "builtin_interfaces")
+ament_target_dependencies(lyra_bridge "rclcpp" "lyra_msg" "std_msgs" "sensor_msgs" "builtin_interfaces")
 #rosidl_target_interfaces(lyra_bridge lyra_bridge "rosidl_typesupport_cpp")#Necessary if you are including messages in the same package they are defined in: https://discourse.ros.org/t/ros2-how-to-use-custom-message-in-project-where-its-declared/2071
 
 #TODO What is the significance of this??

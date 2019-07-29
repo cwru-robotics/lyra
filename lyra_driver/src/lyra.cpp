@@ -1,6 +1,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <lyra_msg/msg/hand_motion.hpp>
 #include <lyra_msg/msg/hand_contact.hpp>
+#include <sensor_msgs/msg/joint_state.hpp>
 
 #include <thread>
 
@@ -17,7 +18,7 @@ void thread_for_recieving(
 	const int socket,
 	const struct sockaddr_in & add_in,
 	const std::shared_ptr<rclcpp::Node> & node,
-	const std::shared_ptr<rclcpp::Publisher<lyra_msg::msg::HandMotion> > & pub,
+	const std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::JointState> > & pub,
 	const bool v
 ){
 	float buffer [6];
@@ -40,14 +41,19 @@ void thread_for_recieving(
                 }
                 
                 //TODO figure out how to populate the time in the headers.
-                lyra_msg::msg::HandMotion m_out;
+                sensor_msgs::msg::JointState m_out;
                 
-                m_out.wrist_rot = buffer[0];
+                m_out.name = {"wristy", "wristx", "thumb0", "thumb1", "index0", "index1"};
+                for(int i = 0; i < 6; i++){
+                	m_out.position.push_back(buffer[i]);
+                }
+                
+                /*m_out.wrist_rot = buffer[0];
 		m_out.wrist_flex = buffer[1];
 		m_out.thumb_a = buffer[2];
 		m_out.thumb_b = buffer[3];
 		m_out.index = buffer[4];
-		m_out.mrl = buffer[5];
+		m_out.mrl = buffer[5];*/
 		
 		pub->publish(m_out);
 	}
@@ -112,7 +118,7 @@ int main(int argc, char ** argv){
 	
 	
 	//Set up motion transmission (to ROS) publisher
-	auto motion_ros_publisher =  nh->create_publisher<lyra_msg::msg::HandMotion>("/hand_motion", 1);
+	auto motion_ros_publisher =  nh->create_publisher<sensor_msgs::msg::JointState>("/hand_motion", 1);
 	
 	
 	//Set up motion reception (from UDP) subscriber
