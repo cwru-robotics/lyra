@@ -21,22 +21,31 @@ void thread_for_recieving(
 	const std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::JointState> > & pub,
 	const bool v
 ){
-	float buffer [6];
+	char buffer [100];
 	while(rclcpp::ok()){
 		unsigned int len;
 		recvfrom(
 			socket,
 			(char *)buffer,
-			6 * sizeof(float),  
+			100 * sizeof(char),  
                 	MSG_WAITALL,
                 	(struct sockaddr *) (& add_in),
                 	&len
                 );
                 
+                //RCLCPP_INFO(node->get_logger(), "Got raw result %s", buffer);
+                double result[7];
+                sscanf(
+                	buffer,
+                	"[%lf, %lf, %lf, %lf, %lf, %lf, %lf]",
+                	&result[0], &result[1], &result[2],
+                	&result[3], &result[4], &result[5], &result[6]
+                );
+                
                 if(v){
                 	RCLCPP_INFO(node->get_logger(), "Publishing hand motion %f %f %f %f %f %f",
-                		buffer[0], buffer[1], buffer[2],
-                		buffer[3], buffer[4], buffer[5]
+                		result[1], result[2], result[3],
+                		result[4], result[5], result[6]
                 	);
                 }
                 
@@ -45,7 +54,7 @@ void thread_for_recieving(
                 
                 m_out.name = {"wristy", "wristx", "thumb0", "thumb1", "index0", "index1"};
                 for(int i = 0; i < 6; i++){
-                	m_out.position.push_back(buffer[i]);
+                	m_out.velocity.push_back(result[i + 1] * (3.1415 / 180.0));
                 }
                 
                 /*m_out.wrist_rot = buffer[0];
