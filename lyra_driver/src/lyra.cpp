@@ -54,7 +54,8 @@ void thread_for_recieving(
                 
                 m_out.name = {"wristy", "wristx", "thumb0", "thumb1", "index0", "index1"};
                 for(int i = 0; i < 6; i++){
-                	m_out.velocity.push_back(result[i + 1] * (3.1415 / 180.0));
+                	m_out.position.push_back(result[i + 1] * (3.1415 / 180.0));
+                	m_out.velocity.push_back(0.0);
                 }
                 
                 /*m_out.wrist_rot = buffer[0];
