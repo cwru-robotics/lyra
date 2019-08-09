@@ -1276,12 +1276,11 @@
 </axis>
 </joint>
 	<plugin name="set_joint_position" filename="libset_joint_position_plugin.so">
-		<topicName> /set_gazebo_joint_states </topicName>
+		<topicName> /hand_motion </topicName>
 		<joints>
-        		wristy
-        		wristx
-        		wristz
-        		badjnrt
+			wristx
+			wristy
+			wristz
         	</joints>
 	</plugin>
 </model>
