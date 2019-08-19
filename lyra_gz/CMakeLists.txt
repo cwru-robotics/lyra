@@ -24,6 +24,7 @@ find_package(builtin_interfaces REQUIRED)
 #	It would be better if the models went away when the package did,
 #	in case they are somehow causing problems and a clean removal is necessary.
 install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY world DESTINATION share/${PROJECT_NAME})
 set(GAZEBO_MODEL_PATH $ENV{HOME}/.gazebo)
 install(DIRECTORY models
 	DESTINATION ${GAZEBO_MODEL_PATH}

@@ -4,7 +4,7 @@ import launch_ros.actions
 import sys
 import rclpy
 from gazebo_msgs.srv import SpawnEntity
-#from ament_index_python.packages import get_package_share_directory
+from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():#{
 
@@ -12,11 +12,17 @@ def generate_launch_description():#{
 	#TODO For the time being the default gazebo_ros launch file is complete garbage and doesn't offer any of the right functionality, so instead we do it manually.
 	#gz_srv = launch.actions.IncludeLaunchDescription(
 	#	launch.launch_description_sources.PythonLaunchDescriptionSource(
- # 	get_package_share_directory('gazebo_ros') + '/launch/empty_world.launch.py'
+ # 	get_package_directory('gazebo_ros') + '/launch/empty_world.launch.py'
 #)
 	#)
 	gz_srv = launch.actions.ExecuteProcess(
-		cmd=['gzserver', '--verbose', '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so'],
+		cmd=[
+			'gzserver',
+			'--verbose',
+			'-s', 'libgazebo_ros_init.so',
+			'-s', 'libgazebo_ros_factory.so',
+			get_package_share_directory('lyra_gz') + "/world/beerworld.world"
+		],
 		output='screen'
 	)
 	
@@ -40,6 +46,8 @@ def generate_launch_description():#{
 		cmd=['ros2', 'run', 'gazebo_ros', 'spawn_entity.py', '-entity', 'hand', '-file', '/home/chrysalis/chrysalis_ws/src/lyra_gz/mdl/mpl_haptix_right_forearm/model.config', '-x', '0', '-y', '0', '-z', '0'],
 		output='screen'
 	)
+	
+	print("\n"+ get_package_share_directory('lyra_gz') + "\n")
 
 	return launch.LaunchDescription([
 		gz_srv,
