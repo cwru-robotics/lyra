@@ -1,7 +1,7 @@
-#include <rclcpp/rclcpp.hpp>
-#include <lyra_msg/msg/hand_motion.hpp>
-#include <lyra_msg/msg/hand_contact.hpp>
-#include <sensor_msgs/msg/joint_state.hpp>
+#include <ros/ros.h>
+//#include <lyra_msg/msg/hand_motion.hpp>
+//#include <lyra_msg/msg/hand_contact.hpp>
+#include <sensor_msgs/JointState.h>
 
 #include <thread>
 
@@ -17,12 +17,12 @@
 void thread_for_recieving(
 	const int socket,
 	const struct sockaddr_in & add_in,
-	const std::shared_ptr<rclcpp::Node> & node,
-	const std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::JointState> > & pub,
+	const ros::NodeHandle & node,
+	const ros::Publisher & pub,
 	const bool v
 ){
 	char buffer [100];
-	while(rclcpp::ok()){
+	while(ros::ok()){
 		unsigned int len;
 		recvfrom(
 			socket,
@@ -43,14 +43,14 @@ void thread_for_recieving(
                 );
                 
                 if(v){
-                	RCLCPP_INFO(node->get_logger(), "Publishing hand motion %f %f %f %f %f %f",
+                	ROS_INFO("Publishing hand motion %f %f %f %f %f %f",
                 		result[1], result[2], result[3],
                 		result[4], result[5], result[6]
                 	);
                 }
                 
                 //TODO figure out how to populate the time in the headers.
-                sensor_msgs::msg::JointState m_out;
+                sensor_msgs::JointState m_out;
                 
                 m_out.name = {"wristy", "wristx", "thumb0", "thumb1", "index0", "index1"};
                 for(int i = 0; i < 6; i++){
@@ -65,18 +65,18 @@ void thread_for_recieving(
 		m_out.index = buffer[4];
 		m_out.mrl = buffer[5];*/
 		
-		pub->publish(m_out);
+		pub.publish(m_out);
 	}
 }
 
 
 int publisher_socket;
 struct sockaddr_in * servaddr;
-std::shared_ptr<rclcpp::Node> n_extern;
+ros::NodeHandle * n_extern;
 bool verbose;
 
 
-void CB_sense_msg(const lyra_msg::msg::HandContact::SharedPtr msg){
+/*void CB_sense_msg(const lyra_msg::msg::HandContact::SharedPtr msg){
 	float serialized [11];
 	serialized[0] = msg->palm_front;
 	serialized[1] = msg->palm_back;
@@ -107,7 +107,7 @@ void CB_sense_msg(const lyra_msg::msg::HandContact::SharedPtr msg){
 		(const struct sockaddr *) servaddr,  
 		sizeof(&servaddr)
 	); 
-}
+}*/
 
 int main(int argc, char ** argv){
 	verbose = false;
@@ -123,24 +123,24 @@ int main(int argc, char ** argv){
 	}
 	
 	//ROS initialization
-	rclcpp::init(argc, argv);
-	auto nh = rclcpp::Node::make_shared("lyra");
+	ros::init(argc, argv, "lyra_driver");
+	ros::NodeHandle nh;
 	
 	
 	//Set up motion transmission (to ROS) publisher
-	auto motion_ros_publisher =  nh->create_publisher<sensor_msgs::msg::JointState>("/hand_motion", 1);
+	ros::Publisher motion_ros_publisher =  nh.advertise<sensor_msgs::JointState>("/hand_motion", 1);
 	
 	
 	//Set up motion reception (from UDP) subscriber
 	int motion_udp_reciever = socket(AF_INET, SOCK_DGRAM, 0);
 	if(motion_udp_reciever == 0){
-		RCLCPP_ERROR(nh->get_logger(), "Could not create motion reception socket.");
+		ROS_ERROR("Could not create motion reception socket.");
 		return 0;
 	}
 	int opt = 1;
 	int errorcode = setsockopt(motion_udp_reciever, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
 	if (errorcode){ 
-		RCLCPP_ERROR(nh->get_logger(), "Socket configuration error: %d", errorcode);
+		ROS_ERROR("Socket configuration error: %d", errorcode);
 		return 0;
 	}
 	struct sockaddr_in motion_udp_reciever_address; 
@@ -153,7 +153,7 @@ int main(int argc, char ** argv){
 		sizeof(motion_udp_reciever_address)
 	);
 	if (errorcode < 0){ 
-		RCLCPP_ERROR(nh->get_logger(), "Socket binding error: %d", errorcode);
+		ROS_ERROR("Socket binding error: %d", errorcode);
 		return 0;
 	}
 	std::thread recthread(
@@ -170,7 +170,7 @@ int main(int argc, char ** argv){
 	//Set up sensory transmission (to udp) socket
 	int sens_transmit_socket = socket(AF_INET, SOCK_DGRAM, 0);
 	if(sens_transmit_socket < 0){
-		RCLCPP_ERROR(nh->get_logger(), "Error creating position transmitter socket: %d", sens_transmit_socket);
+		ROS_ERROR("Error creating position transmitter socket: %d", sens_transmit_socket);
 		return 0;
 	}
 	struct sockaddr_in sens_transmit_addr;
@@ -178,20 +178,20 @@ int main(int argc, char ** argv){
 	sens_transmit_addr.sin_port = SENSATION_PORT;
 	int ecode = inet_pton(AF_INET, TARGET_IP, &sens_transmit_addr.sin_addr);
 	if(ecode <=0){ 
-		RCLCPP_ERROR(nh->get_logger(), "Invalid address/ Address not supported: %s, %d", TARGET_IP, ecode);
+		ROS_ERROR("Invalid address/ Address not supported: %s, %d", TARGET_IP, ecode);
 		return 0;
 	} 
 	//ecode = connect(sens_transmit_socket, (struct sockaddr *)&sens_transmit_addr, sizeof(sens_transmit_addr));
 	if (ecode < 0){ 
-		RCLCPP_ERROR(nh->get_logger(), "Connection to sensory computer failed: %d", ecode);
+		ROS_ERROR("Connection to sensory computer failed: %d", ecode);
 		return 0;
 	}
 	
 	
 	//Set up sensory reception (from ROS) subscriber
-	auto subscription = nh->create_subscription<lyra_msg::msg::HandContact>("/hand_contact", 1, CB_sense_msg);
+	//auto subscription = nh->create_subscription<lyra_msg::msg::HandContact>("/hand_contact", 1, CB_sense_msg);
 	
-	rclcpp::spin(nh);
+	ros::spin();
 	
 	//RCLCPP_ERROR(nh->get_logger(), "Ran successfully.");
 

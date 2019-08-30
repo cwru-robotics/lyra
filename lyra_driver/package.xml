@@ -8,25 +8,25 @@
 	<license>GPLv3</license>
 	
 	<!--TODO What happens when we take this out?-->
-	<buildtool_depend>ament_cmake</buildtool_depend>
+	<buildtool_depend>catkin</buildtool_depend>
 
-	<build_depend>rclcpp</build_depend>
-	<build_depend>lyra_msg</build_depend>
+	<build_depend>roscpp</build_depend>
+	<!--build_depend>lyra_msg</build_depend-->
 	<!--TODO are you required?-->
 	<build_depend>std_msgs</build_depend>
-	<build_depend>builtin_interfaces</build_depend>
+	<build_depend>sensor_msgs</build_depend>
+	<!--build_depend>builtin_interfaces</build_depend-->
 	<!--build_depend>rosidl_default_generators</build_depend-->
 
-	<exec_depend>rclcpp</exec_depend>
-	<exec_depend>lyra_msg</exec_depend>
+	<exec_depend>roscpp</exec_depend>
+	<!--exec_depend>lyra_msg</exec_depend-->
 	<exec_depend>std_msgs</exec_depend>
 	<exec_depend>sensor_msgs</exec_depend>
-	<exec_depend>builtin_interfaces</exec_depend>
+	<!--exec_depend>builtin_interfaces</exec_depend-->
 	<!--exec_depend>rosidl_default_runtime</exec_depend>
 	
 	<member_of_group>rosidl_interface_packages</member_of_group-->
 
 	<export>
-		<build_type>ament_cmake</build_type>
 	</export>
 </package>
