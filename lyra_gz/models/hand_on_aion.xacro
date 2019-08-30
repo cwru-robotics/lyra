@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="hand_on_wheels">
+	<xacro:include filename="$(find aion_r1_description)/urdf/r1_sim.urdf.xacro"/>
+	
+	<!--Simple elevation arm-->
+	<link name="arm_link">
+		<origin xyz="0 0 0.15" rpy="0 0 0"/>
+		<collision name='arm_link_C'>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+				<box size=".03 .03 .3"/>
+			</geometry>
+		</collision>
+		<visual name='arm_link_V'>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+				<box size=".03 .03 .3"/>
+			</geometry>
+		</visual>
+		<inertial>
+			<mass value="0.014" />
+			<inertia
+				ixx="0.00097298" ixy="0" ixz="0"
+				iyy="0.00132536" iyz="0"
+	        		izz="0.00097299"
+	        	/>
+	    	</inertial>
+	</link>
+	<joint name="arm_joint" type="revolute">
+		<origin xyz="0.2 0 0.2" rpy="1.57 1.57 1.57"/>
+		<axis xyz="1 0 0"/>
+		<limit lower="-1.5707" upper="1.5707" velocity="5.0" effort="1000"/>
+		<parent link="odom"/>
+		<child link="arm_link"/>
+	</joint>
+	<!--Elevation arm controller-->
+	<transmission name="tran1">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="arm_joint">
+			<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="motor1">
+			<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+	</transmission>
+	<gazebo>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+			<robotNamespace>/arm</robotNamespace>
+		</plugin>
+	</gazebo>
+	
+	<!--Hand-->
+	<xacro:include filename="$(find lyra_gz)/models/modularized_hand.urdf"/>
+</robot>
