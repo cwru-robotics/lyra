@@ -1,6 +1,11 @@
 <sdf version='1.5'>
 	<model name="mpl_haptix_right_forearm">
 	<!-- Model SDF copied from gazebo_models -->
+	
+	<link name='world'>
+		<pose>0 0 0 0 0 0</pose>
+	</link>
+	
 	<joint name='elbow' type='revolute'>
 		<child>forearm</child>
 		<parent>world</parent>
@@ -8,6 +13,10 @@
 			<xyz>0 0 1.0</xyz>
 			<use_parent_model_frame>1</use_parent_model_frame>
 		</axis>
+		<limit>
+			<lower>-1.57</lower>
+			<upper>1.57</upper>
+		</limit>
 	</joint>
 	<link name='forearm'>
 		<pose>0.00660504 -0.294573 0.119123 -1.21334e-13 2.77556e-17 -0.0115373</pose>
@@ -80,8 +89,11 @@
 
 
 				<use_parent_model_frame>1</use_parent_model_frame>
-			</axis>
-
+			</axis>		
+<limit>
+			<lower>-1.57</lower>
+			<upper>1.57</upper>
+		</limit>
 	</joint>
 
 	<link name='wristx'>

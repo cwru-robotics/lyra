@@ -1,0 +1,875 @@
+<?xml version="1.0" ?>
+<!--Generated using pysdf. Try not to look directly at it.-->
+<robot name="mpl_haptix_right_forearm">
+  <!--joint name="elbow" type="revolute">
+    <parent link="L_world"/>
+    <child link="L_forearm"/>
+    <origin rpy="0       0      -0.01153" xyz="0.0066  -0.29457  0.11912"/>
+    <axis xyz="0  0  1"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint-->
+  
+    <!--link name="world">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+  </link>
+  <link name="L_forearm">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="0  0  0" xyz="0       0       0.02855"/>
+      <geometry>
+        <cylinder length="0.0571" radius="0.03567"/>
+      </geometry>
+    </collision>
+    <collision name="collision_1">
+      <origin rpy="1.5707  0      0" xyz="0      -0.10745  0.016"/>
+      <geometry>
+        <cylinder length="0.148" radius="0.035"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/forearm.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link-->
+  <link name="L_wristy">
+    <inertial>
+      <mass value="0.0001"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0    -0.025  0"/>
+      <geometry>
+        <cylinder length="0.05" radius="0.03447"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/wristy.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="wristy" type="revolute">
+    <parent link="arm_link"/>
+    <child link="L_wristy"/>
+    <origin rpy="1.57  0  0" xyz="0 0 0.3"/>
+    <axis xyz="0  1  0"/>
+    <limit effort="10000" lower="-1.57" upper="1.57" velocity="1000"/>
+  </joint>
+  
+  <link name="L_wristx">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="0  0  0" xyz="0       0      -0.00314"/>
+      <geometry>
+        <cylinder length="0.04478" radius="0.01473"/>
+      </geometry>
+    </collision>
+    <collision name="collision_1">
+      <origin rpy="0      1.5707  0" xyz="0.0236  -0.02969 -0.00239"/>
+      <geometry>
+        <cylinder length="0.005" radius="0.013175"/>
+      </geometry>
+    </collision>
+    <collision name="collision_2">
+      <origin rpy="0      1.5707  0" xyz="-0.0236  -0.02969 -0.00239"/>
+      <geometry>
+        <cylinder length="0.005" radius="0.013175"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/wristx.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="wristx" type="revolute">
+    <parent link="L_wristy"/>
+    <child link="L_wristx"/>
+    <origin rpy="0  0  0" xyz="-3.00000000e-05  0.05   0"/>
+    <axis xyz="0  0 -1"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  
+    <joint name="wristz" type="revolute">
+    <parent link="L_wristx"/>
+    <child link="L_wristz"/>
+    <origin rpy="0  0  0" xyz="0 0.025 0"/>
+    <axis xyz="1  0  0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  <link name="L_wristz">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      1.5707" xyz="0.00206 -0.00047  0.00046"/>
+      <geometry>
+        <cylinder length="0.04482" radius="0.01411"/>
+      </geometry>
+    </collision>
+    <collision name="collision_palm">
+      <origin rpy="0  0  0" xyz="0.002   -0.03739  0"/>
+      <geometry>
+        <box size="0.07928 0.08316 0.04402"/>
+      </geometry>
+    </collision>
+    <collision name="palmEdge">
+      <origin rpy="1.57  0   -0.1" xyz="-0.028 -0.03   0"/>
+      <geometry>
+        <cylinder length="0.060" radius="0.01"/>
+      </geometry>
+    </collision>
+    <collision name="handTop">
+      <origin rpy="0  0  0" xyz="0.002 -0.045  0.01"/>
+      <geometry>
+        <box size="0.075 0.08 0.02"/>
+      </geometry>
+    </collision>
+    <collision name="palm0">
+      <origin rpy="0   0   0.1" xyz="0.023 -0.04  -0.012"/>
+      <geometry>
+        <box size="0.037 0.07 0.02"/>
+      </geometry>
+    </collision>
+    <collision name="palm1">
+      <origin rpy="0  0  0" xyz="-0.01799 -0.04    -0.012"/>
+      <geometry>
+        <box size="0.037 0.07 0.02"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/wristz.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <visual name="visual_palm">
+      <origin rpy="0  0  0" xyz="0.02562  0       0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/palm.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  
+  <link name="L_index0">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0      -0.01339  0"/>
+      <geometry>
+        <cylinder length="0.028" radius="0.01"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/index0.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="index0" type="revolute">
+    <parent link="L_wristz"/>
+    <child link="L_index0"/>
+    <origin rpy="0 0 0" xyz="0.02 0.09 0"/>
+    <axis xyz="-1 0 0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  
+  <link name="L_index1">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0      -0.02782  0"/>
+      <geometry>
+        <cylinder length="0.02781" radius="0.01"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/index1.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="index1" type="revolute">
+    <parent link="L_index0"/>
+    <child link="L_index1"/>
+    <origin rpy="0  0  0" xyz="6.00000000e-05 0.025 0"/>
+    <axis xyz="-1  0  0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  
+  <link name="L_index2">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0 3.1415 0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0      -0.01152  0"/>
+      <geometry>
+        <cylinder length="0.029" radius="0.0075"/>
+      </geometry>
+    </collision>
+    <collision name="collision_1">
+      <origin rpy="0  0  0" xyz="0      -0.02502  0"/>
+      <geometry>
+        <sphere radius="0.0075"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/index2.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="index2" type="revolute">
+    <parent link="L_index1"/>
+    <child link="L_index2"/>
+    <origin rpy="0  0  0" xyz="0 0.05   0.0"/>
+    <axis xyz="-1  0  0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  
+   <!--TODO Why is there a fourth joint not present in the human hand?-->
+  <!--joint name="index3" type="revolute">
+    <parent link="L_index2"/>
+    <child link="L_index3"/>
+    <origin rpy="0  0  0" xyz="-0.00063 -0.0245   0"/>
+    <axis xyz="1  0  0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+    <link name="L_index3">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0      -0.00688  0.0001"/>
+      <geometry>
+        <cylinder length="0.01376" radius="0.0074"/>
+      </geometry>
+    </collision>
+    <collision name="collision_1">
+      <origin rpy="0  0  0" xyz="0     -0.015   0.0001"/>
+      <geometry>
+        <sphere radius="0.0072"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/index3.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link-->
+  
+  <link name="L_middle0">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0      -0.01339  0"/>
+      <geometry>
+        <cylinder length="0.028" radius="0.01"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/middle0.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="middle0" type="revolute">
+    <parent link="L_wristz"/>
+    <child link="L_middle0"/>
+    <origin rpy="0 0 0" xyz="0.01 0.1 0"/>
+    <axis xyz="-1  0 0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  
+  <link name="L_middle1">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0    -0.025  0"/>
+      <geometry>
+        <cylinder length="0.03459" radius="0.01"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/middle1.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="middle1" type="revolute">
+    <parent link="L_middle0"/>
+    <child link="L_middle1"/>
+    <origin rpy="0  0  0" xyz="0 0.025 0"/>
+    <axis xyz="-1  0  0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  
+  <link name="L_middle2">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0      -0.01152  0"/>
+      <geometry>
+        <cylinder length="0.029" radius="0.0075"/>
+      </geometry>
+    </collision>
+    <collision name="collision_1">
+      <origin rpy="0  0  0" xyz="0      -0.02302  0"/>
+      <geometry>
+        <sphere radius="0.0075"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/middle2.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="middle2" type="revolute">
+    <parent link="L_middle1"/>
+    <child link="L_middle2"/>
+    <origin rpy="0  0  0" xyz="0 0.05 0"/>
+    <axis xyz="-1  0  0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+ 
+  <!--joint name="middle3" type="revolute">
+    <parent link="L_middle2"/>
+    <child link="L_middle3"/>
+    <origin rpy="0  0  0" xyz="-0.00063 -0.0245   0"/>
+    <axis xyz="1  0  0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint-->
+  
+    <link name="L_pinky0">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0      -0.01339  0"/>
+      <geometry>
+        <cylinder length="0.028" radius="0.01"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/pinky0.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="pinky0" type="revolute">
+    <parent link="L_wristz"/>
+    <child link="L_pinky0"/>
+    <origin rpy="0 0 0" xyz="-0.02 0.05 0"/>
+    <axis xyz="-1  0 0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  
+  <link name="L_pinky1">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0      -0.02082  0"/>
+      <geometry>
+        <cylinder length="0.02381" radius="0.01"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/pinky1.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="pinky1" type="revolute">
+    <parent link="L_pinky0"/>
+    <child link="L_pinky1"/>
+    <origin rpy="0  0  0" xyz="0  0.025   0"/>
+    <axis xyz="-1  0  0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  
+  <link name="L_pinky2">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0     -0.0076  0"/>
+      <geometry>
+        <cylinder length="0.029" radius="0.0075"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/pinky2.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="pinky2" type="revolute">
+    <parent link="L_pinky1"/>
+    <child link="L_pinky2"/>
+    <origin rpy="0  0  0" xyz="0 0.05 0"/>
+    <axis xyz="-1  0  0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+ 
+  <link name="L_ring0">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0      -0.01339  0"/>
+      <geometry>
+        <cylinder length="0.028" radius="0.01"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/ring0.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="ring0" type="revolute">
+    <parent link="L_wristz"/>
+    <child link="L_ring0"/>
+    <origin rpy="0 0 0" xyz="-0.01 0.1 0"/>
+    <axis xyz="-1 0 0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  <link name="L_ring1">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0      -0.02505  0"/>
+      <geometry>
+        <cylinder length="0.03095" radius="0.01"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/ring1.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="ring1" type="revolute">
+    <parent link="L_ring0"/>
+    <child link="L_ring1"/>
+    <origin rpy="0  0  0" xyz="0 0.025 0"/>
+    <axis xyz="-1  0  0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  <link name="L_ring2">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707 0 0" xyz="0 -0.01152 0"/>
+      <geometry>
+        <cylinder length="0.029" radius="0.0075"/>
+      </geometry>
+    </collision>
+    <collision name="collision_1">
+      <origin rpy="0  0  0" xyz="0 -0.02302 0"/>
+      <geometry>
+        <sphere radius="0.0075"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/ring2.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="ring2" type="revolute">
+    <parent link="L_ring1"/>
+    <child link="L_ring2"/>
+    <origin rpy="0  0  0" xyz="0 0.05 0"/>
+    <axis xyz="-1  0  0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  
+  <!--joint name="pinky3" type="revolute">
+    <parent link="L_pinky2"/>
+    <child link="L_pinky3"/>
+    <origin rpy="0  0  0" xyz="-4.00000000e-05  -1.75000000e-02   0.00000000e+00"/>
+    <axis xyz="1  0  0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+
+<link name="L_ring3">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0      -0.00688  0.0001"/>
+      <geometry>
+        <cylinder length="0.01376" radius="0.0074"/>
+      </geometry>
+    </collision>
+    <collision name="collision_1">
+      <origin rpy="0  0  0" xyz="0     -0.015   0.0001"/>
+      <geometry>
+        <sphere radius="0.0072"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/ring3.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="ring3" type="revolute">
+    <parent link="L_ring2"/>
+    <child link="L_ring3"/>
+    <origin rpy="0  0  0" xyz="-0.00063 -0.0245   0"/>
+    <axis xyz="1  0  0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint-->
+  
+  <!--Can't control the thumb, so it is currently omitted.-->
+  <!--joint name="thumb0" type="revolute">
+    <parent link="L_wristz"/>
+    <child link="L_thumb0"/>
+    <origin rpy="0.08737 -0.03058 -0.26536" xyz="0.03398 -0.02069 -0.01009"/>
+    <axis xyz="0  1  0"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  <joint name="thumb1" type="revolute">
+    <parent link="L_thumb0"/>
+    <child link="L_thumb1"/>
+    <origin rpy="0  0  0" xyz="0.02091 -0.00084  0.00144"/>
+    <axis xyz="0  0 -1"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  <joint name="thumb2" type="revolute">
+    <parent link="L_thumb1"/>
+    <child link="L_thumb2"/>
+    <origin rpy="0  0  0" xyz="0.0335   0      -0.00074"/>
+    <axis xyz="0  0 -1"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  <joint name="thumb3" type="revolute">
+    <parent link="L_thumb2"/>
+    <child link="L_thumb3"/>
+    <origin rpy="0  0  0" xyz="0.0335   0       0.00108"/>
+    <axis xyz="0  0 -1"/>
+    <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
+  </joint>
+  <link name="L_middle3">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0      -0.00688  0.0001"/>
+      <geometry>
+        <cylinder length="0.01376" radius="0.0074"/>
+      </geometry>
+    </collision>
+    <collision name="collision_1">
+      <origin rpy="0  0  0" xyz="0     -0.015   0.0001"/>
+      <geometry>
+        <sphere radius="0.0072"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/middle3.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link-->
+  <!--link name="L_pinky3">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="1.5707  0      0" xyz="0      -0.00688  0.0001"/>
+      <geometry>
+        <cylinder length="0.01376" radius="0.0074"/>
+      </geometry>
+    </collision>
+    <collision name="collision_1">
+      <origin rpy="0  0  0" xyz="0     -0.015   0.0001"/>
+      <geometry>
+        <sphere radius="0.0072"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/pinky3.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+      <link name="L_thumb0">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="0  0  0" xyz="0.02   -0.001   0.0015"/>
+      <geometry>
+        <cylinder length="0.023" radius="0.008221"/>
+      </geometry>
+    </collision>
+    <collision name="collision_1">
+      <origin rpy="0  0  0" xyz="0.01   -0.001   0.0015"/>
+      <geometry>
+        <box size="0.0202 0.0155 0.023"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/thumb0.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="L_thumb1">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="0  0  0" xyz="-0.00055  0      -0.00025"/>
+      <geometry>
+        <cylinder length="0.0188" radius="0.00688"/>
+      </geometry>
+    </collision>
+    <collision name="collision_1">
+      <origin rpy="0  0  0" xyz="0.03381  0       0"/>
+      <geometry>
+        <cylinder length="0.02176" radius="0.00688"/>
+      </geometry>
+    </collision>
+    <collision name="collision_2">
+      <origin rpy="0  0  0" xyz="0.01612  0       0"/>
+      <geometry>
+        <box size="0.03273 0.01376 0.02176"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/thumb1.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="L_thumb2">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="0  0  0" xyz="0.03415  0       0.001"/>
+      <geometry>
+        <cylinder length="0.02236" radius="0.00679"/>
+      </geometry>
+    </collision>
+    <collision name="collision_1">
+      <origin rpy="0  0  0" xyz="0.01493  0       0.001"/>
+      <geometry>
+        <box size="0.03095 0.015 0.02236"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/thumb2.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="L_thumb3">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="collision">
+      <origin rpy="0  0  0" xyz="0.01507 -0.00219  0.0001"/>
+      <geometry>
+        <cylinder length="0.01476" radius="0.0074"/>
+      </geometry>
+    </collision>
+    <collision name="collision_1">
+      <origin rpy="0  0  0" xyz="0.0195  0      0"/>
+      <geometry>
+        <sphere radius="0.008"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <mesh filename="package://lyra_gz/models/mpl_haptix_left_forearm/meshes/thumb3.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link-->
+  <gazebo>
+		<plugin name="set_joint_position" filename="libset_joint_position_plugin.so">
+			<topicName> /hand_motion </topicName>
+			<joints>
+				wristx
+				wristy
+				wristz
+				
+				index0
+				index1
+				index2
+				
+				middle0
+				middle1
+				middle2
+				
+				ring0
+				ring1
+				ring2
+				
+				pinky0
+				pinky1
+				
+				<!--thumb0
+				thumb1
+				thumb2
+				thumb3-->
+        		</joints>
+		</plugin>
+	</gazebo>
+	
+	<!--Touch sensors-->
+<gazebo reference="L_wristz">
+<sensor name='palm0_contact_sensor' type='contact'>
+<always_on>1</always_on>
+<contact>
+<collision>palm0</collision>
+</contact>
+<plugin name="palm_0_bump" filename="libgazebo_ros_bumper.so">
+      <bumperTopicName>contact/palm/0</bumperTopicName>
+      <frameName>L_wristz</frameName>
+    </plugin>
+</sensor>
+<sensor name='palm1_contact_sensor' type='contact'>
+<always_on>1</always_on>
+<contact>
+<collision>palm1</collision>
+</contact>
+<plugin name="palm_1_bump" filename="libgazebo_ros_bumper.so">
+      <bumperTopicName>contact/palm/1</bumperTopicName>
+      <frameName>L_wristz</frameName>
+    </plugin>
+</sensor>
+<sensor name='palmEdge_contact_sensor' type='contact'>
+<always_on>1</always_on>
+<contact>
+<collision>palmEdge</collision>
+</contact>
+<plugin name="palm_2_bump" filename="libgazebo_ros_bumper.so">
+      <bumperTopicName>contact/palm/2</bumperTopicName>
+      <frameName>L_wristz</frameName>
+    </plugin>
+</sensor>
+<sensor name='handTop_contact_sensor' type='contact'>
+<always_on>1</always_on>
+<contact>
+<collision>handTop</collision>
+</contact>
+<plugin name="palm_3_bump" filename="libgazebo_ros_bumper.so">
+      <bumperTopicName>contact/palm/3</bumperTopicName>
+      <frameName>L_wristz</frameName>
+    </plugin>
+</sensor>
+</gazebo>
+
+<!--gazebo reference="L_thumb3">
+<sensor name='thumb3_contact_sensor' type='contact'>
+<always_on>1</always_on>
+<contact>
+<collision>collision</collision>
+<collision>collision_1</collision>
+</contact>
+</sensor></gazebo>
+
+<gazebo reference="L_thumb2">
+<sensor name='thumb2_contact_sensor' type='contact'>
+<always_on>1</always_on>
+<contact>
+<collision>collision</collision>
+<collision>collision_1</collision>
+</contact>
+</sensor></gazebo-->
+
+
+
+</robot>

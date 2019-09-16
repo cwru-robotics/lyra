@@ -14,6 +14,11 @@
 #define POSITION_PORT 5225
 #define SENSATION_PORT 5226
 
+ros::Time last_time;
+double accum_a;
+double accum_b;
+double accum_c;
+
 void thread_for_recieving(
 	const int socket,
 	const struct sockaddr_in & add_in,
@@ -33,6 +38,11 @@ void thread_for_recieving(
                 	&len
                 );
                 
+                if(last_time.sec == -1){
+                	last_time = ros::Time::now();
+                }
+                ros::Duration dt = ros::Time::now() - last_time;
+                
                 //RCLCPP_INFO(node->get_logger(), "Got raw result %s", buffer);
                 double result[7];
                 sscanf(
@@ -44,17 +54,41 @@ void thread_for_recieving(
                 
                 if(v){
                 	ROS_INFO("Publishing hand motion %f %f %f %f %f %f",
-                		result[1], result[2], result[3],
-                		result[4], result[5], result[6]
+                		result[0], result[1], result[2],
+                		result[3], result[4], result[5]
                 	);
                 }
+                
+                double dt_factor = 0.0157 * ((double)dt.sec + 1e-9 * (double)dt.nsec);
+                
+                accum_a += dt_factor * result[0];
+                accum_b += dt_factor * result[1];
+                accum_c += dt_factor * result[2];
+                
                 
                 //TODO figure out how to populate the time in the headers.
                 sensor_msgs::JointState m_out;
                 
-                m_out.name = {"wristy", "wristx", "thumb0", "thumb1", "index0", "index1"};
-                for(int i = 0; i < 6; i++){
-                	m_out.position.push_back(result[i + 1] * (3.1415 / 180.0));
+                m_out.name = {"wristx", "wristz"};
+                m_out.position.push_back(accum_a);
+                m_out.position.push_back(accum_b);
+                m_out.velocity.push_back(0.0);
+                m_out.velocity.push_back(0.0);
+                //TODO Replace with mimic_joints?
+                for(int i = 0; i < 3; i++){
+                	if(i != 2){
+                		m_out.name.push_back("pinky" + std::to_string(i));
+                		m_out.position.push_back(accum_c);
+                		m_out.velocity.push_back(0.0);
+                	}
+                	m_out.name.push_back("middle" + std::to_string(i));
+                	m_out.position.push_back(accum_c);
+                	m_out.velocity.push_back(0.0);
+                	m_out.name.push_back("ring" + std::to_string(i));
+                	m_out.position.push_back(accum_c);
+                	m_out.velocity.push_back(0.0);
+                	m_out.name.push_back("index" + std::to_string(i));
+                	m_out.position.push_back(accum_c);
                 	m_out.velocity.push_back(0.0);
                 }
                 
@@ -187,6 +221,10 @@ int main(int argc, char ** argv){
 		return 0;
 	}
 	
+	last_time.sec = -1;
+	accum_a = 0.0;
+	accum_b = 0.0;
+	accum_c = 0.0;
 	
 	//Set up sensory reception (from ROS) subscriber
 	//auto subscription = nh->create_subscription<lyra_msg::msg::HandContact>("/hand_contact", 1, CB_sense_msg);
