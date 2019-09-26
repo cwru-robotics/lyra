@@ -30,3 +30,6 @@ catkin_package(
 
 add_executable(lyra_bridge src/lyra.cpp)
 target_link_libraries(lyra_bridge ${catkin_LIBRARIES})
+
+add_executable(lyra_aion src/aion.cpp)
+target_link_libraries(lyra_aion ${catkin_LIBRARIES})

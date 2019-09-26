@@ -72,24 +72,24 @@ void thread_for_recieving(
                 m_out.name = {"wristx", "wristz"};
                 m_out.position.push_back(accum_a);
                 m_out.position.push_back(accum_b);
-                m_out.velocity.push_back(0.0);
-                m_out.velocity.push_back(0.0);
+                m_out.velocity.push_back(result[0]);
+                m_out.velocity.push_back(result[1]);
                 //TODO Replace with mimic_joints?
                 for(int i = 0; i < 3; i++){
                 	if(i != 2){
                 		m_out.name.push_back("pinky" + std::to_string(i));
                 		m_out.position.push_back(accum_c);
-                		m_out.velocity.push_back(0.0);
+                		m_out.velocity.push_back(result[2]);
                 	}
                 	m_out.name.push_back("middle" + std::to_string(i));
                 	m_out.position.push_back(accum_c);
-                	m_out.velocity.push_back(0.0);
+                	m_out.velocity.push_back(result[2]);
                 	m_out.name.push_back("ring" + std::to_string(i));
                 	m_out.position.push_back(accum_c);
-                	m_out.velocity.push_back(0.0);
+                	m_out.velocity.push_back(result[2]);
                 	m_out.name.push_back("index" + std::to_string(i));
                 	m_out.position.push_back(accum_c);
-                	m_out.velocity.push_back(0.0);
+                	m_out.velocity.push_back(result[2]);
                 }
                 
                 /*m_out.wrist_rot = buffer[0];
