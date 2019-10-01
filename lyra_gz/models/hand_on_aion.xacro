@@ -2,6 +2,8 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="hand_on_wheels">
 	<xacro:include filename="$(find aion_r1_description)/urdf/r1_sim.urdf.xacro"/>
 	
+	
+	
 	<!--Simple elevation arm-->
 	<link name="arm_link">
 		<collision name='arm_link_C'>
@@ -16,6 +18,12 @@
 				<box size=".03 .03 .3"/>
 			</geometry>
 		</visual>
+		<visual name="arm_link_pivot">
+			<origin xyz="0 0 0" rpy="0 1.57 1.57" />
+			<geometry>
+				<cylinder radius="0.03" length="0.1"/>
+			</geometry>
+		</visual>
 		<inertial>
 			<origin xyz="0 0 0.15" rpy="0 0 0"/>
 			<mass value="0.014" />
@@ -27,7 +35,7 @@
 	    	</inertial>
 	</link>
 	<joint name="arm_joint" type="revolute">
-		<origin xyz="0.15 0 0.15" rpy="1.57 1.57 1.57"/>
+		<origin xyz="0.15 0 0.14" rpy="1.57 1.57 1.57"/>
 		<axis xyz="0 1 0"/>
 		<limit lower="-1.5707" upper="1.5707" velocity="5.0" effort="1000"/>
 		<parent link="odom"/>
