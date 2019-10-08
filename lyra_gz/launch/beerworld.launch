@@ -49,12 +49,12 @@
     	/>
     	
     	<!--Drone chassis control-->
-    	<node
+    	<!--node
 		name="keyboard_control" pkg="teleop_twist_keyboard"
 		type="teleop_twist_keyboard.py" output="screen"
 	>
 		<remap from="/cmd_vel" to="/cmd_vel_mux/input/teleop"/>
-	</node>
+	</node-->
 	
 	<!--TODO Add arm controller configuration.-->
 	<rosparam subst_value="true" command="load" ns="/arm">

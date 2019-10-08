@@ -1,0 +1,7 @@
+<launch>
+	<!-- Launch the Leap sensor.-->
+	<rosparam file="$(find leap_motion)/config/listener_params.yaml" command="load" />
+	<node pkg="leap_motion" type="leap_motion_driver_node" name="leap_driver" output="screen" />
+	
+	<node pkg="lyra_driver" type="lyra_leap" name="leap_to_sim" output="screen" />
+</launch>
