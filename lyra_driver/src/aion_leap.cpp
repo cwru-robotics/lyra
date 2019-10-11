@@ -55,7 +55,6 @@ void get_calib_point(ros::NodeHandle & nh, ros::AsyncSpinner & spinny, const cha
 	spinny.start();
 	while(std::getchar() && ros::ok()){
 		if(are_we_recieving){
-			printf("\e[39m\t%s location acquired.\n", location);
 			leap_motion::Human tmp = *(
 				ros::topic::waitForMessage<leap_motion::Human>(
 					"/leap_motion/leap_device", nh
@@ -70,6 +69,7 @@ void get_calib_point(ros::NodeHandle & nh, ros::AsyncSpinner & spinny, const cha
 		}
 	}
 	spinny.stop();
+	printf("\e[39m\t%s location acquired.\n", location);
 }
 
 int lr_ind, ud_ind, fb_ind;
@@ -145,17 +145,17 @@ void calibration_procedure(ros::NodeHandle & nh){
 	printf("Calibration complete!\n");
 }
 	
-#define A_MAX 1.5
+#define A_MAX -1.5
 #define A_MIN 0.0
 #define A_DED 0.0
 
-#define V_MAX -0.5
-#define V_MIN 0.5
-#define V_DED 0.1
+#define V_MAX 0.5
+#define V_MIN -0.5
+#define V_DED 0.2
 
-#define W_MAX -0.5
-#define W_MIN 0.5
-#define W_DED 0.05
+#define W_MAX 0.5
+#define W_MIN -0.5
+#define W_DED 0.1
 
 double flatten(
 	const double input,
@@ -230,12 +230,16 @@ void leap_CB(const leap_motion::Human::ConstPtr& msg){
 	}
 	
 	geometry_msgs::Twist drone_twist;
+	drone_twist.linear.x = 0.0;
+	drone_twist.angular.z = 0.0;
 	if(!isnan(v)){
 		drone_twist.linear.x = v;
 	}
 	if(!isnan(w)){
 		drone_twist.angular.z = w;
 	}
+	drone_publisher.publish(drone_twist);
+	
 	//Tilt the arm.
 	/*double arm_tilt_raw = (
 		(std::min(
