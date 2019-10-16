@@ -2,6 +2,7 @@
 //#include <lyra_msg/msg/hand_motion.hpp>
 //#include <lyra_msg/msg/hand_contact.hpp>
 #include <sensor_msgs/JointState.h>
+#include <std_msgs/String.h>
 
 #include <thread>
 
@@ -117,38 +118,33 @@ ros::NodeHandle * n_extern;
 bool verbose;
 
 
-/*void CB_sense_msg(const lyra_msg::msg::HandContact::SharedPtr msg){
-	float serialized [11];
-	serialized[0] = msg->palm_front;
-	serialized[1] = msg->palm_back;
-	serialized[2] = msg->palm_inside;
-	serialized[3] = msg->palm_outside;
-	serialized[4] = msg->thumb;
-	serialized[5] = msg->thumb_side;
-	serialized[6] = msg->index;
-	serialized[7] = msg->index_side;
-	serialized[8] = msg->middle;
-	serialized[9] = msg->ring;
-	serialized[10] = msg->little;
+void CB_sense_msg(const std_msgs::String::ConstPtr& msg){
+	float serialized [18];
+	
+	for(int i = 0; i < 18; i++){
+		serialized[i] = std::stod(msg->data.substr(i * 3, i * 3 + 3));
+	}
 	
 	if(verbose){
-                RCLCPP_INFO(n_extern->get_logger(), "Forwarding sensory motion %f %f %f\n%f %f %f\n%f %f %f\n%f",
+                ROS_INFO("Forwarding sensory motion %f %f %f\n%f %f %f\n%f %f %f\n%f %f %f\n%f %f %f\n%f %f %f",
                 	serialized[0], serialized[1], serialized[2],
                 	serialized[3], serialized[4], serialized[5],
                 	serialized[6], serialized[7], serialized[8],
-                	serialized[9], serialized[10]
+                	serialized[9], serialized[10], serialized[11],
+                	serialized[12], serialized[13], serialized[14],
+                	serialized[15], serialized[16], serialized[17]
 		);
         }
 	
 	sendto(
 		publisher_socket,
 		(const char *)serialized,
-		11 * sizeof(float),
+		18 * sizeof(float),
 		MSG_CONFIRM,
 		(const struct sockaddr *) servaddr,  
 		sizeof(&servaddr)
 	); 
-}*/
+}
 
 int main(int argc, char ** argv){
 	verbose = false;
@@ -234,7 +230,7 @@ int main(int argc, char ** argv){
 	accum_c = 0.0;
 	
 	//Set up sensory reception (from ROS) subscriber
-	//auto subscription = nh->create_subscription<lyra_msg::msg::HandContact>("/hand_contact", 1, CB_sense_msg);
+	ros::Subscriber sub = nh.subscribe("/hand_feedback", 10, CB_sense_msg);
 	
 	ros::spin();
 	
