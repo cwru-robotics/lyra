@@ -153,8 +153,8 @@ void calibration_procedure(ros::NodeHandle & nh){
 #define V_MIN -0.5
 #define V_DED 0.2
 
-#define W_MAX 0.5
-#define W_MIN -0.5
+#define W_MAX 1.0
+#define W_MIN -1.0
 #define W_DED 0.1
 
 double flatten(
@@ -186,6 +186,11 @@ void leap_CB(const leap_motion::Human::ConstPtr& msg){
 			ROS_WARN("Lost arm target.");
 		}
 		stop_since_time = ros::Time::now() + ros::Duration(SLEEP_INTERVAL);
+		//When we lose the hand we should stop moving.
+		geometry_msgs::Twist drone_twist;
+		drone_twist.linear.x = 0.0;
+		drone_twist.angular.z = 0.0;
+		drone_publisher.publish(drone_twist);
 		return;
 	}
 	if(ros::Time::now() < stop_since_time){

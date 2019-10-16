@@ -11,7 +11,7 @@
 
 //TODO Make this command-line parametrizable.
 #define TARGET_IP "192.168.42.129"
-#define POSITION_PORT 5225
+#define POSITION_PORT 5025
 #define SENSATION_PORT 5226
 
 ros::Time last_time;
@@ -59,12 +59,19 @@ void thread_for_recieving(
                 	);
                 }
                 
-                double dt_factor = 0.0157 * ((double)dt.sec + 1e-9 * (double)dt.nsec);
+                double dt_factor = 0.00157 * ((double)dt.sec + 1e-9 * (double)dt.nsec);
                 
-                accum_a += dt_factor * result[0];
-                accum_b += dt_factor * result[1];
-                accum_c += dt_factor * result[2];
+                accum_a += dt_factor * (result[0]);
+                accum_b += dt_factor * (result[1]);
+                accum_c += dt_factor * (result[2]);
                 
+                accum_a = std::max(std::min(accum_a, 1.57), -1.57);
+                accum_b = std::max(std::min(accum_b, 1.57), -1.57);
+                accum_c = std::max(std::min(accum_c, 1.57), 0.0);
+                
+               /* accum_a = (result[0] - 0.5) * 1.57;
+                accum_b = (result[1] - 0.5) * 1.57;
+                accum_c = (result[2] - 0.5) * 1.57;*/
                 
                 //TODO figure out how to populate the time in the headers.
                 sensor_msgs::JointState m_out;
