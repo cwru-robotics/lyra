@@ -6,6 +6,7 @@ find_package(catkin REQUIRED COMPONENTS
 	std_msgs
 	sensor_msgs
 	leap_motion
+	open_loop_control
 )
 
 # Default to C++14
@@ -20,6 +21,7 @@ endif()
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(leap_motion REQUIRED)
+find_package(open_loop_control REQUIRED)
 #find_package(rosidl_default_generators REQUIRED)
 
 include_directories(${catkin_INCLUDE_DIRS})
@@ -32,6 +34,9 @@ catkin_package(
 
 add_executable(lyra_bridge src/lyra.cpp)
 target_link_libraries(lyra_bridge ${catkin_LIBRARIES})
+
+add_executable(lyra_drone src/lyra_drone.cpp)
+target_link_libraries(lyra_drone ${catkin_LIBRARIES})
 
 add_executable(lyra_polaris src/aion_polaris.cpp)
 target_link_libraries(lyra_polaris ${catkin_LIBRARIES})
