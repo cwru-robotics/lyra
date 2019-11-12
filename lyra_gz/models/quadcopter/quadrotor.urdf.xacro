@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<robot
+        name="quadrotor"
+        xmlns:xacro="http://www.ros.org/wiki/xacro"
+>
+
+    <!-- Included URDF Files -->
+    <xacro:include filename="$(find lyra_gz)/models/quadcopter/quadrotor_base.urdf.xacro"/>
+
+    <!-- Instantiate quadrotor_base_macro once (has no parameters atm) -->
+    <xacro:quadrotor_base_macro/>
+    <xacro:include filename="$(find realsense_gazebo_plugin)/urdf/realsense-RS200.macro.xacro"/>
+    <!--xacro:realsense-rs200 prefix="$(arg name)/" parent="base_link"-->
+    <xacro:realsense-rs200 prefix="" parent="base_link">
+        <origin xyz="0.05 0.0 -0.12" rpy="0 0 0"/>
+    </xacro:realsense-rs200>
+
+</robot>
