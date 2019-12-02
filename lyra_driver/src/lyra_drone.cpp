@@ -4,6 +4,7 @@
 #include <open_loop_control/MoveAction.h>
 #include <sensor_msgs/JointState.h>
 #include <std_msgs/String.h>
+#include <gazebo_msgs/ApplyBodyWrench.h>
 
 #include <thread>
 
@@ -63,17 +64,9 @@ void thread_for_recieving(
                 
                 double dt_factor = 0.00157 * ((double)dt.sec + 1e-9 * (double)dt.nsec);
                 
-                accum_a += dt_factor * (result[0]);
+                /*accum_a += dt_factor * (result[0]);
                 accum_b += dt_factor * (result[1]);
                 accum_c += dt_factor * (result[2]);
-                
-               // accum_a = std::max(std::min(accum_a, 1.57), -1.57);
-               // accum_b = std::max(std::min(accum_b, 1.57), -1.57);
-                accum_c = std::max(std::min(accum_c, -1.0), 1.0);
-                
-               /* accum_a = (result[0] - 0.5) * 1.57;
-                accum_b = (result[1] - 0.5) * 1.57;
-                accum_c = (result[2] - 0.5) * 1.57;*/
                 
                 //TODO figure out how to populate the time in the headers.
                 geometry_msgs::Pose poser;
@@ -88,6 +81,23 @@ void thread_for_recieving(
                 mover.pose = poser;
 		
 		pub.publish(mover);
+                */
+                
+                accum_a = result[0];
+                accum_b = result[1];
+                accum_c = result[2];
+                
+                gazebo_msgs::ApplyBodyWrench srv;
+                srv.request.body_name="changeling::base_link";
+                srv.request.reference_frame = "changeling::base_link";
+                
+                srv.request.duration = ros::Duration(0.2);
+                
+                srv.request.wrench.torque.z = accum_a;
+                srv.request.wrench.force.y = accum_b;
+                srv.request.wrench.force.z = accum_c;
+                
+                ros::service::call("/gazebo/apply_body_wrench", srv);
 	}
 }
 

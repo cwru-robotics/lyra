@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
 	sensor_msgs
 	leap_motion
 	open_loop_control
+	gazebo_msgs
 )
 
 # Default to C++14
@@ -20,6 +21,7 @@ endif()
 #TODO what about this?
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(gazebo_msgs REQUIRED)
 find_package(leap_motion REQUIRED)
 find_package(open_loop_control REQUIRED)
 #find_package(rosidl_default_generators REQUIRED)
