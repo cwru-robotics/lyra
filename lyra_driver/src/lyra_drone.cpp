@@ -83,9 +83,9 @@ void thread_for_recieving(
 		pub.publish(mover);
                 */
                 
-                accum_a = result[0];
-                accum_b = result[1];
-                accum_c = result[2];
+                accum_a = 5.0 * result[0];
+                accum_b = 40.0 * result[1];
+                accum_c = 40.0 * abs(result[2]);
                 
                 gazebo_msgs::ApplyBodyWrench srv;
                 srv.request.body_name="changeling::base_link";
@@ -155,7 +155,7 @@ int main(int argc, char ** argv){
 	
 	
 	//Set up motion transmission (to ROS) publisher
-	ros::Publisher motion_ros_publisher =  nh.advertise<open_loop_control::MoveGoal>("/control_server/goal", 1);
+	ros::Publisher motion_ros_publisher;// =  nh.advertise<open_loop_control::MoveGoal>("/control_server/goal", 1);
 	
 	
 	//Set up motion reception (from UDP) subscriber

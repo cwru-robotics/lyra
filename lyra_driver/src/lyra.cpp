@@ -60,7 +60,7 @@ void thread_for_recieving(
                 	);
                 }
                 
-                double dt_factor = 0.00157 * ((double)dt.sec + 1e-9 * (double)dt.nsec);
+                double dt_factor = 0.5 * 0.0157 * ((double)dt.sec + 1e-9 * (double)dt.nsec);
                 
                 accum_a += dt_factor * (result[0]);
                 accum_b += dt_factor * (result[1]);
@@ -119,10 +119,11 @@ bool verbose;
 
 
 void CB_sense_msg(const std_msgs::String::ConstPtr& msg){
-	float serialized [18];
+	/*float serialized [18];
 	
 	for(int i = 0; i < 18; i++){
-		serialized[i] = std::stod(msg->data.substr(i * 3, i * 3 + 3));
+		ROS_INFO("%d to %d", i * 3, i * 3 + 3);
+		serialized[i] = std::stod(msg->data.substr(0, 3));
 	}
 	
 	if(verbose){
@@ -134,16 +135,20 @@ void CB_sense_msg(const std_msgs::String::ConstPtr& msg){
                 	serialized[12], serialized[13], serialized[14],
                 	serialized[15], serialized[16], serialized[17]
 		);
-        }
+        }*/
+        //serialized[19] = (float)'\0';
 	
-	sendto(
+	/*sendto(
 		publisher_socket,
 		(const char *)serialized,
 		18 * sizeof(float),
 		MSG_CONFIRM,
 		(const struct sockaddr *) servaddr,  
 		sizeof(&servaddr)
-	); 
+	); */
+	ROS_INFO("Forwarding sese message.");
+	std::string syscall_string = "echo \""+ msg->data + "\" | nc -4u -w1 192.168.42.198 5226";
+	system(syscall_string.c_str());
 }
 
 int main(int argc, char ** argv){
@@ -205,24 +210,29 @@ int main(int argc, char ** argv){
 	
 	
 	//Set up sensory transmission (to udp) socket
+	ROS_INFO("Setting up transmission socket.");
 	int sens_transmit_socket = socket(AF_INET, SOCK_DGRAM, 0);
 	if(sens_transmit_socket < 0){
 		ROS_ERROR("Error creating position transmitter socket: %d", sens_transmit_socket);
 		return 0;
 	}
 	struct sockaddr_in sens_transmit_addr;
+	ROS_INFO("sin_addr starts out as %d", sens_transmit_addr.sin_addr.s_addr);
 	sens_transmit_addr.sin_family = AF_INET;
-	sens_transmit_addr.sin_port = SENSATION_PORT;
+	sens_transmit_addr.sin_port = (unsigned short)SENSATION_PORT;
 	int ecode = inet_pton(AF_INET, TARGET_IP, &sens_transmit_addr.sin_addr);
+	ROS_INFO("sin_addr is %d", sens_transmit_addr.sin_addr.s_addr);
 	if(ecode <=0){ 
 		ROS_ERROR("Invalid address/ Address not supported: %s, %d", TARGET_IP, ecode);
 		return 0;
 	} 
-	//ecode = connect(sens_transmit_socket, (struct sockaddr *)&sens_transmit_addr, sizeof(sens_transmit_addr));
+	ecode = connect(sens_transmit_socket, (struct sockaddr *)&sens_transmit_addr, sizeof(sens_transmit_addr));
 	if (ecode < 0){ 
 		ROS_ERROR("Connection to sensory computer failed: %d", ecode);
 		return 0;
 	}
+	
+	ROS_INFO("We are supposed to have connected.");
 	
 	last_time.sec = -1;
 	accum_a = 0.0;
@@ -230,7 +240,7 @@ int main(int argc, char ** argv){
 	accum_c = 0.0;
 	
 	//Set up sensory reception (from ROS) subscriber
-	ros::Subscriber sub = nh.subscribe("/hand_feedback", 10, CB_sense_msg);
+	ros::Subscriber sub = nh.subscribe("/contact/aggregate", 10, CB_sense_msg);
 	
 	ros::spin();
 	
