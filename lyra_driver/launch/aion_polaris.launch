@@ -1,7 +1,0 @@
-<launch>
-	<include file="$(find polaris_sensor)/launch/polaris_ros.launch">
-		<arg name="ROM" value="$(find polaris_sensor)/rom/8700338.rom"/>
-	</include>
-	
-	<node name="arm_controller" pkg="lyra_driver" type="lyra_aion" output="screen"/>
-</launch>

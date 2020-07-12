@@ -9,14 +9,14 @@
     <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
   </joint-->
   
-    <!--link name="world">
+    <link name="world">
     <inertial>
       <mass value="0.01"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
     </inertial>
   </link>
-  <link name="L_forearm">
+  <!--link name="L_forearm">
     <inertial>
       <mass value="0.01"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
@@ -61,7 +61,7 @@
     </visual>
   </link>
   <joint name="wristy" type="revolute">
-    <parent link="arm_link"/>
+    <parent link="world"/>
     <child link="L_wristy"/>
     <origin rpy="1.57  0  0" xyz="0 0 0.3"/>
     <axis xyz="0  1  0"/>
